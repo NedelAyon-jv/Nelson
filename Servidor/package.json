@@ -1,0 +1,9 @@
+{
+  "scripts": {
+  "dev": "node src/socket.js"
+},
+  "dependencies": {
+    "express": "^4.21.2",
+    "ws": "^8.18.1"
+  }
+}
