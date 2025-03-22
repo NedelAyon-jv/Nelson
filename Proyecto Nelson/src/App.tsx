@@ -12,7 +12,7 @@ function App() {
   return (
     
     <>
-    <h1>Sube una imagen</h1>
+    <h1>Digita tu sueldo</h1>
     <ImageForm/>
     </>
   );

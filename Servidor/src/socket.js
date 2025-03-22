@@ -12,24 +12,30 @@ wss.on("connection", (ws) => {
   console.log("Client connected!");
 
   ws.on("message", (message) => {
-    console.log("Received message:", typeof message);
+    const text = message.toString().trim(); 
 
-    if (message instanceof Buffer) {
-      const filename = `image${Date.now()}.png`;
-      const filePath = path.join(__dirname,"uploads", filename);
+    console.log("Received text:", text);
 
-      fs.writeFile(filePath, message, (err) => {
-        if (err) {
-          console.error("Error saving image:", err);
-          ws.send("Error saving image.");
-        } else {
-          console.log(`Image saved as ${filename}`);
-          ws.send(`http://localhost:5000/uploads/$%7Bfilename%7D%60`); // Send image URL back
-        }
-      });
-    } else {
-      ws.send("Received non-binary data.");
+    const income = parseFloat(text);
+
+    if (isNaN(income) || income < 0) {
+      ws.send("Error: Please send a valid income amount.");
+      return;
     }
+
+  
+    const taxRate = 0.2;
+    const taxAmount = income * taxRate;
+    const afterTaxIncome = income - taxAmount;
+
+    const response = {
+      originalIncome: income,
+      taxRate: taxRate * 100 + "%",
+      taxAmount: taxAmount,
+      afterTaxIncome: afterTaxIncome,
+    };
+
+    ws.send(JSON.stringify(response));
   });
 
   ws.on("close", () => {

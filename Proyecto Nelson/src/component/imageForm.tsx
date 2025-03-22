@@ -3,30 +3,28 @@ import { useSocket } from "../hook/useSocket";
 
 function ImageForm() {
     const [Ready, Value, send] = useSocket({ url: " ws://localhost:8080" })
-    const [image, setImage] = useState<File | null>(null)
+    const [income, setIncome] = useState<string>("")
     // Handle image file selection
     const handleImageChange = (event:ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
-            setImage(event.target.files[0]);
-          }
+        setIncome(()=>event.target.value)
     };//
 
     // Handle form submission
     const handleSubmit = (event:FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (Ready && image) {
-            send(image); // Send the ArrayBuffer over WebSocket
+        if (Ready && income) {
+            send(income.trim()); // Send the ArrayBuffer over WebSocket
         } else {
             console.error("WebSocket is not ready or no image selected.");
         }
     };
     return (
         <form onSubmit={handleSubmit}>
-            <input type="file" accept="image/*" onChange={handleImageChange} />
-            <button type="submit" disabled={!Ready || !image}>
-                Send Image
+            <input type="number"value={income} onChange={handleImageChange} />
+            <button type="submit" disabled={!Ready || !income}>
+                Sacar Total
             </button>
-            {Value && <img src={Value} />}
+            {Value && <h1>Total de impuestos:{JSON.parse(Value)?.afterTaxIncome}</h1>}
         </form>
     );
 }

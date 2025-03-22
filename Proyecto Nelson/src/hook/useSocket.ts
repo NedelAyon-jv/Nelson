@@ -12,14 +12,7 @@ export const useSocket = ({url}:{url:string}) => {
       socket.onopen = () => setIsReady(true);
       socket.onclose = () => setIsReady(false);
       socket.onmessage = (event) => {
-        if (event.data instanceof ArrayBuffer) {
-          // Convert received binary data to a Blob and create a URL
-          const blob = new Blob([event.data]);
-          const imageUrl = URL.createObjectURL(blob);
-          setVal(imageUrl);
-        } else {
-          setVal(event.data);
-        }
+        setVal(event.data)
       };
   
       ws.current = socket;
