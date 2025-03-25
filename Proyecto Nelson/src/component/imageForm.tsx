@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useSocket } from "../hook/useSocket";
 
 function ImageForm() {
-    const [Ready, Value, send] = useSocket({ url: " ws://localhost:8080" })
+    const [Ready, Value, send] = useSocket({ url: " ws://25.1.57.138:8080" })
     const [income, setIncome] = useState<string>("")
     // Handle image file selection
     const handleImageChange = (event:ChangeEvent<HTMLInputElement>) => {
